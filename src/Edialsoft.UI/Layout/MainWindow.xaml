@@ -1,0 +1,62 @@
+﻿<Window x:Class="Edialsoft.UI.Layout.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Edialsoft.UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Border Padding="10">
+        <StackPanel>
+            <StackPanel Margin="10">
+                <Button Click="Button_Click" Margin="15" FontSize="15" Width="75" Height="Auto" HorizontalAlignment="Left">Cadastrar</Button>
+            </StackPanel>
+            <DataGrid 
+                AutoGenerateColumns="False"
+                Name="Grid"
+                Margin="00 20 0 0"
+                BorderThickness="0"
+                CanUserAddRows="False"
+                CanUserResizeColumns="True"
+                ColumnHeaderHeight="40"
+                DataContext="{Binding }"
+                FontSize="15"
+                GridLinesVisibility="All"
+                ItemsSource="{Binding}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=FirstName}"  Header="Nome" IsReadOnly="True" Visibility="Visible"/>
+                    <DataGridTextColumn Binding="{Binding Path=LastName}" Header="Sobrenome" IsReadOnly="True" Visibility="Visible"/>
+                    <DataGridTextColumn Binding="{Binding Path=Phone}" Header="Telefone" IsReadOnly="True" Visibility="Visible"/>
+
+                    <DataGridTemplateColumn Header="Edit">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    x:Name="btnEdit"
+                                    Width="75"
+                                    Height="Auto"
+                                    Margin="10"
+                                    Click="btnEdit_Click"
+                                    Content="Edit" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Delete">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    x:Name="btnDelete"
+                                    Width="75"
+                                    Height="Auto"
+                                    Margin="10"
+                                    Click="btnDelete_Click"
+                                    Content="Delete" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Border>
+</Window>

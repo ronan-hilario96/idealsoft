@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  #############################
+  # Database
+  #############################
+  db:
+    image: mysql:8
+    container_name: edialsoft-db
+    restart: always
+    environment:
+      MYSQL_USER: "useredialsoft"
+      MYSQL_PASSWORD: "passwordedialsoft"
+      MYSQL_DATABASE: "edialsoft"
+      MYSQL_ROOT_PASSWORD: "passwordgedialsoft"
+    ports:
+      - "3305:3306"
+    
+  #############################
+  # Back
+  #############################
+  api:
+    build:
+      dockerfile: ./src/Edialsoft.WebApi/Dockerfile
+      context: .
+    image: ciatecnica/edialsoft-back:1
+    container_name: edialsoft-api
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: http://+:80
+      ConnectionString: "server=db; port=3306; database=edialsoft; uid=root; pwd=passwordgedialsoft; charset=utf8;"
+    depends_on:
+      - db
+    ports:
+      - "3698:80"
+  
