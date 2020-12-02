@@ -47,6 +47,14 @@ namespace Edialsoft.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody] PersonDto personDto)
         {
             await _savePerson.Save(personDto);
+
+            if (_savePerson.ErrorList.Any())
+            {
+                return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
+                {
+                    { "Messages", _savePerson.ErrorList.ToArray() }
+                }));
+            }
             return Ok();
         }
 

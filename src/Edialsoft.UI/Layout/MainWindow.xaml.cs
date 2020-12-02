@@ -39,9 +39,12 @@ namespace Edialsoft.UI.Layout
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            string msg = "Tem certeza ?";
+            var itemselected = (PersonViewModel) Grid.SelectedItem;
+            string msg = "Tem certeza que deseja excluir\n\n";
+            msg += $"Nome: {itemselected.FirstName} {itemselected.LastName}\n\n";
+            msg += $"Telefone: {itemselected.Phone}";
 
-            var action = MessageBox.Show(msg, msg, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var action = MessageBox.Show(msg, "Deletar Registro", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (action == MessageBoxResult.Yes)
             {

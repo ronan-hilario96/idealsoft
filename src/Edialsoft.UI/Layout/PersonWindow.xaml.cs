@@ -55,7 +55,15 @@ namespace Edialsoft.UI.Layout
                 Phone = phone.Text.Trim()
             };
 
-            await PersonHttpClient.Post(person);
+            var result = await PersonHttpClient.Post(person);
+
+            if (result != null && result.Errors.Messages.Any())
+            {
+                var listErrors = string.Join("\n\n", result.Errors.Messages);
+
+                MessageBox.Show(listErrors, $"Erro ao tentar {Title}", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             Close();
         }

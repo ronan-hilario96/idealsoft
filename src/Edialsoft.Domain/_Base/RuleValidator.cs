@@ -7,11 +7,11 @@ namespace Edialsoft.Domain._Base
 {
     public class RuleValidator
     {
-        public readonly List<string> _mensagensDeErros;
+        public readonly List<string> _ErrosMsg;
 
         private RuleValidator()
         {
-            _mensagensDeErros = new List<string>();
+            _ErrosMsg = new List<string>();
         }
 
         public static RuleValidator New()
@@ -22,15 +22,15 @@ namespace Edialsoft.Domain._Base
         public RuleValidator When(bool hasError, string msgError)
         {
             if(hasError)
-                _mensagensDeErros.Add(msgError);
+                _ErrosMsg.Add(msgError);
 
             return this;
         }
 
         public void TriggerException()
         {
-            if (_mensagensDeErros.Any())
-                throw new DomainException(_mensagensDeErros);
+            if (_ErrosMsg.Any())
+                throw new DomainException(_ErrosMsg);
         }
     }
 

@@ -1,11 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using Edialsoft.Domain._Base;
 
 namespace Edialsoft.Domain.Person
 {
     public class Person : Entity
     {
-        // (17) 9 8202-0529
         private readonly Regex _phoneRegex = new Regex(@"^\(\d{2}\)\s(\d{1}\s|\d{0})\d{4}-\d{4}$");
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
@@ -13,14 +13,17 @@ namespace Edialsoft.Domain.Person
 
         public Person(string firstName, string lastName, string phone)
         {
-            RuleValidator
+            Errors = RuleValidator
                 .New()
                 .When(string.IsNullOrEmpty(firstName.Trim()), Resource.FirstNameIsNull)
                 .When(string.IsNullOrEmpty(lastName.Trim()), Resource.LastNameIsNull)
                 .When(string.IsNullOrEmpty(phone.Trim()), Resource.PhoneIsNull)
                 .When(!_phoneRegex.Match(phone.Trim()).Success, Resource.PhoneInvalid)
-                .TriggerException();
-            
+                ._ErrosMsg;
+
+            if (Errors.Any())
+                return;
+
             FirstName = firstName.Trim();
             LastName = lastName.Trim();
             Phone = phone.Trim();
@@ -28,31 +31,40 @@ namespace Edialsoft.Domain.Person
 
         public void AlterFirstName(string firstName)
         {
-            RuleValidator
+            Errors = RuleValidator
                 .New()
                 .When(string.IsNullOrEmpty(firstName.Trim()), Resource.FirstNameIsNull)
-                .TriggerException();
+                ._ErrosMsg;
+
+            if (Errors.Any())
+                return;
 
             FirstName = firstName.Trim();
         }
 
         public void AlterLastName(string lastName)
         {
-            RuleValidator
+            Errors = RuleValidator
                 .New()
                 .When(string.IsNullOrEmpty(lastName.Trim()), Resource.LastNameIsNull)
-                .TriggerException();
+                ._ErrosMsg;
+
+            if (Errors.Any())
+                return;
 
             LastName = lastName.Trim();
         }
 
         public void AlterPhone(string phone)
         {
-            RuleValidator
+            Errors = RuleValidator
                 .New()
                 .When(string.IsNullOrEmpty(phone.Trim()), Resource.PhoneIsNull)
                 .When(!_phoneRegex.Match(phone.Trim()).Success, Resource.PhoneInvalid)
-                .TriggerException();
+                ._ErrosMsg;
+
+            if (Errors.Any())
+                return;
 
             Phone = phone.Trim();
         }

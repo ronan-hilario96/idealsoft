@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Edialsoft.UI.ViewModel;
 using Newtonsoft.Json;
+using JsonConverterAttribute = System.Text.Json.Serialization.JsonConverterAttribute;
 
 namespace Edialsoft.UI.HttpClient
 {
@@ -33,7 +34,7 @@ namespace Edialsoft.UI.HttpClient
             return response;
         }
 
-        public static async Task Post(PersonViewModel person)
+        public static async Task<Response> Post(PersonViewModel person)
         {
             var jsonContent = JsonConvert.SerializeObject(person);
 
@@ -47,10 +48,9 @@ namespace Edialsoft.UI.HttpClient
                 string resultado = await conteudo.ReadAsStringAsync();
                 // ... Exibe o resutlado
 
-                if (resultado != null && resultado.Length >= 150)
-                {
-                    Console.WriteLine(resultado.Substring(0, 150) + "...");
-                }
+                var result = JsonConvert.DeserializeObject<Response>(resultado);
+
+                return result;
             }
         }
 
